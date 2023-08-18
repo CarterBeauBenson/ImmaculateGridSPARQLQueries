@@ -54,3 +54,52 @@ SELECT DISTINCT ?player WHERE {
 }
 
 To use this query, replace "Award 1" with the first required award and "Award 2" with the second required award. 
+
+Stat to Stat
+
+Wins to Strikeouts
+
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT ?player ?wins ?strikeouts WHERE {
+  ?player dbp:position dbr:Pitcher ;
+          dbp:stat1value ?wins ;
+          dbp:stat3value ?strikeouts .
+          
+  FILTER(?wins > x && ?strikeouts > y)
+}
+
+To use this, replax x with the desired wins number (ex. 300) and y with the desired strikeout number (ex. 3000)
+
+Strikeouts to ERA
+
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT ?player ?strikeouts ?era WHERE {
+  ?player dbp:position dbr:Pitcher ;
+          dbp:stat3value ?strikeouts ;
+          dbp:stat2value ?era .
+          
+  FILTER(?strikeouts > x && ?era < y)
+}
+
+To use this query, replace x with the desired strikeout total (ex. 3000) and y with the desired ERA total (ex 4.00). 
+
+Wins to ERA
+
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT ?player ?wins ?era WHERE {
+  ?player dbp:position dbr:Pitcher ;
+          dbp:stat1value ?wins ;
+          dbp:stat2value ?era .
+          
+  FILTER(?wins > x && ?era < y)
+}
+
+To use this query, replace x with the desired wins total (ex. 300) and y with the desired era total (ex. 4.00)
+
+
