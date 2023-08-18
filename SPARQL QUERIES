@@ -1,0 +1,56 @@
+Team to Team
+
+PREFIX prop: <http://dbpedia.org/property/>
+
+SELECT ?player WHERE {
+  ?player prop:teams ?teams.
+  FILTER(CONTAINS(str(?teams), "T1 City T1 Name") && CONTAINS(str(?teams), "T2 City T2 Name"))
+}
+
+To use this query, replace "T1 City T1 Name" and "T2 City T2 name" with the City and Name of the required team. ex. "Atlanta Braves", "New York Yankees".
+
+
+Team to Award
+
+PREFIX prop: <http://dbpedia.org/property/>
+
+SELECT ?player WHERE {
+  ?player prop:teams ?teams.
+  ?player prop:awards ?awards.
+  FILTER(CONTAINS(str(?teams), "Team City and Team Name") && CONTAINS(str(?awards), "Award"))
+}
+
+
+To use this query, replace "Team City and Team Name" with the City and Name of the required team. See line 10
+Replace "Award" with the required award. ex. "NL MVP", "All-Star". 
+
+
+Award to MVP
+
+PREFIX prop: <http://dbpedia.org/property/>
+
+SELECT DISTINCT ?player WHERE {
+  ?player prop:awards ?awards.
+  FILTER(
+    CONTAINS(str(?awards), "Award") &&
+    (
+      CONTAINS(str(?awards), "NL MVP") ||
+      CONTAINS(str(?awards), "AL MVP")
+    )
+  )
+}
+
+To use this query, replace "Award" with the required award. ex. "Gold Glove" or "Silver Slugger"
+
+Award to Award
+PREFIX prop: <http://dbpedia.org/property/>
+
+SELECT DISTINCT ?player WHERE {
+  ?player prop:awards ?awards.
+  FILTER(
+    CONTAINS(str(?awards), "Award 1") && 
+    CONTAINS(str(?awards), "Award 2")
+  )
+}
+
+To use this query, replace "Award 1" with the first required award and "Award 2" with the second required award. 
