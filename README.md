@@ -10,4 +10,6 @@ There is no real way to write the query to differentiate between "as player" and
 
 2. There are queries for pitcher to pitcher stats. For example, there is a query that will return all pitchers that had over 300 wins and 3000 strikeouts. However, hitter to hitter states are not as straight forward.
 
-3. Similarly, there is no straight forwa
+3. There is no way to find season stats, since the blue box on wikipedia only contains career statistics.
+
+4. These SPARQL queries do not work for basketball. I have not checked other sports yet. 
