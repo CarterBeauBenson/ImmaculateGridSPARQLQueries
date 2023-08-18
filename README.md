@@ -8,4 +8,6 @@ Limitations:
 "As player *San Diego Padres *Milwaukee Brewers *New York Yankees *Cincinnati Reds *Kansas City Royals *Baltimore Orioles *Florida Marlins As coach *New York Mets *Washington Nationals (en)"
 There is no real way to write the query to differentiate between "as player" and "as coach" in this text box.
 
-2. 
+2. There are queries for pitcher to pitcher stats. For example, there is a query that will return all pitchers that had over 300 wins and 3000 strikeouts. However, hitter to hitter states are not as straight forward.
+
+3. Similarly, there is no straight forwa
