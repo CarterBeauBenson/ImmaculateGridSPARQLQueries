@@ -102,4 +102,34 @@ SELECT ?player ?wins ?era WHERE {
 
 To use this query, replace x with the desired wins total (ex. 300) and y with the desired era total (ex. 4.00)
 
+Team to Wins 
 
+PREFIX prop: <http://dbpedia.org/property/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT ?player ?wins WHERE {
+  ?player prop:teams ?teams;
+          dbp:position dbr:Pitcher ;
+          dbp:stat1value ?wins .
+          
+  FILTER(CONTAINS(str(?teams), "Team City Team Name") && ?wins > x)
+}
+
+To use this query, replace "Team City Team Name" with the city and name of the team you wish to find (ex. Minnesota Twins) and replace x with the total number of wins you wish to find (ex. 100)
+
+Team to ERA
+
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT ?player ?era WHERE {
+  ?player dbp:teams ?teams;
+          dbp:position dbr:Pitcher ;
+          dbp:stat2value ?era .
+          
+  FILTER(CONTAINS(str(?teams), "Team City Team Name") && ?era < y)
+}
+
+To use this query, replace "Team City Team Name" with the city and name of the required team (ex. New York Yankees) and y with the desired ERA (ex. 3.50). 
+Note: This query does not differentiate between starting pitchers and relief pitchers. Pay attention to the minimum innings requirement on Immaculate Grid. 
