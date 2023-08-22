@@ -55,7 +55,7 @@ SELECT DISTINCT ?player WHERE {
 
 To use this query, replace "Award 1" with the first required award and "Award 2" with the second required award. 
 
-Stat to Stat
+Stat to Stat for pitcher
 
 Wins to Strikeouts
 
@@ -102,6 +102,8 @@ SELECT ?player ?wins ?era WHERE {
 
 To use this query, replace x with the desired wins total (ex. 300) and y with the desired era total (ex. 4.00)
 
+Team to stat Pitcher
+
 Team to Wins 
 
 PREFIX prop: <http://dbpedia.org/property/>
@@ -133,3 +135,47 @@ SELECT ?player ?era WHERE {
 
 To use this query, replace "Team City Team Name" with the city and name of the required team (ex. New York Yankees) and y with the desired ERA (ex. 3.50). 
 Note: This query does not differentiate between starting pitchers and relief pitchers. Pay attention to the minimum innings requirement on Immaculate Grid. 
+
+Team to Stat Batter
+
+Team to Batting Homerun
+
+SELECT DISTINCT ?player ?homeruns_value WHERE {
+  ?player dbp:teams ?teams ;
+          dbo:position ?position .
+
+  OPTIONAL {
+    ?player dbp:stat1label ?stat1label ;
+            dbp:stat1value ?homeruns_stat1 .
+    FILTER(str(?stat1label) = "Home runs")
+  }
+
+  OPTIONAL {
+    ?player dbp:stat2label ?stat2label ;
+            dbp:stat2value ?homeruns_stat2 .
+    FILTER(str(?stat2label) = "Home runs")
+  }
+
+  OPTIONAL {
+    ?player dbp:stat3label ?stat3label ;
+            dbp:stat3value ?homeruns_stat3 .
+    FILTER(str(?stat3label) = "Home runs")
+  }
+
+  OPTIONAL {
+    ?player dbp:stat4label ?stat4label ;
+            dbp:stat4value ?homeruns_stat4 .
+    FILTER(str(?stat4label) = "Home runs")
+  }
+
+  BIND(COALESCE(?homeruns_stat1, ?homeruns_stat2, ?homeruns_stat3, ?homeruns_stat4) AS ?homeruns_value)
+  
+  FILTER(
+    CONTAINS(str(?teams), "y") && 
+    ?position != dbr:Pitcher &&
+    ?homeruns_value > x
+  )
+}
+ORDER BY DESC(?homeruns_value)
+
+To use this query, replace y with the desired team and x with the desired numerical value of homeruns
