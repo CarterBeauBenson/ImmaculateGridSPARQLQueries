@@ -9,6 +9,22 @@ SELECT ?player WHERE {
 
 To use this query, replace "T1 City T1 Name" and "T2 City T2 name" with the City and Name of the required team. ex. "Atlanta Braves", "New York Yankees".
 
+This query specifically finds pitchers. In my experience, this query returns a higher liklihood of a low rarity score. 
+
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+
+SELECT DISTINCT ?player WHERE {
+  ?player dbp:teams ?teams ;
+          dbo:position dbr:Pitcher .
+
+  FILTER(
+    CONTAINS(str(?teams), "T1 City T1 Name") && CONTAINS(str(?teams), "T2 City T2 Name")
+  )
+}
+
+To use this query, fill in the team names as stated in the previous query
 
 Team to Award
 
@@ -179,3 +195,81 @@ SELECT DISTINCT ?player ?homeruns_value WHERE {
 ORDER BY DESC(?homeruns_value)
 
 To use this query, replace y with the desired team and x with the desired numerical value of homeruns
+
+Team to Batting Average
+
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?player ?battingAverage WHERE {
+  ?player dbo:position ?position ;
+          dbp:teams ?teams .
+
+  FILTER(?position != dbr:Pitcher)
+  FILTER(CONTAINS(str(?teams), "New York Yankees"))
+
+  {
+    ?player dbp:stat1label ?label1 ;
+            dbp:stat1value ?value1 .
+    FILTER((?value1 >= "0.0"^^xsd:decimal && ?value1 <= "0.400"^^xsd:decimal))
+    BIND(?value1 AS ?battingAverage)
+  } UNION {
+    ?player dbp:stat2label ?label2 ;
+            dbp:stat2value ?value2 .
+    FILTER((?value2 >= "0.0"^^xsd:decimal && ?value2 <= "0.400"^^xsd:decimal))
+    BIND(?value2 AS ?battingAverage)
+  } UNION {
+    ?player dbp:stat3label ?label3 ;
+            dbp:stat3value ?value3 .
+    FILTER((?value3 >= "0.0"^^xsd:decimal && ?value3 <= "0.400"^^xsd:decimal))
+    BIND(?value3 AS ?battingAverage)
+  }
+}
+ORDER BY DESC(?battingAverage)
+
+Team to RBI 
+
+SELECT DISTINCT ?player ?RBI_value WHERE {
+  ?player dbp:teams ?teams ;
+          dbo:position ?position .
+
+  OPTIONAL {
+    ?player dbp:stat1label ?stat1label ;
+            dbp:stat1value ?RBI_stat1 .
+    FILTER(?stat1label = dbr:Run_batted_in)
+  }
+
+  OPTIONAL {
+    ?player dbp:stat2label ?stat2label ;
+            dbp:stat2value ?RBI_stat2 .
+    FILTER(?stat2label = dbr:Run_batted_in)
+  }
+
+  OPTIONAL {
+    ?player dbp:stat3label ?stat3label ;
+            dbp:stat3value ?RBI_stat3 .
+    FILTER(?stat3label = dbr:Run_batted_in)
+  }
+
+  OPTIONAL {
+    ?player dbp:stat4label ?stat4label ;
+            dbp:stat4value ?RBI_stat4 .
+    FILTER(?stat4label = dbr:Run_batted_in)
+  }
+
+  BIND(COALESCE(?RBI_stat1, ?RBI_stat2, ?RBI_stat3, ?RBI_stat4) AS ?RBI_value)
+  
+  FILTER(
+    CONTAINS(str(?teams), "y") && 
+    ?position != dbr:Pitcher &&
+    ?RBI_value > x
+  )
+}
+ORDER BY DESC(?RBI_value)
+
+Replace x with the desired total and y with the team city and name. 
+
+
+Team to hits
