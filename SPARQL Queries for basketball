@@ -1,3 +1,5 @@
+Team to team
+
 PREFIX dbp: <http://dbpedia.org/property/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbr: <http://dbpedia.org/resource/>
@@ -13,3 +15,6 @@ SELECT DISTINCT ?player ?playerLabel WHERE {
 }
 ORDER BY ?playerLabel
 
+To use this query, replace Team_City_Team_Name_1 and 2 with the city and name of the required teams, using underscores for space. 
+
+There are no other squares that can be filled in on Basketball Immaculate grid because career player stats are not available on wikipedia. 
