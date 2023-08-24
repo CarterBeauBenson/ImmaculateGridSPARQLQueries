@@ -1,0 +1,14 @@
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?player ?playerLabel WHERE {
+  ?player rdf:type dbo:HockeyPlayer.
+  ?player dbp:playedFor dbr:Buffalo_Sabres.
+  ?player dbp:playedFor dbr:Montreal_Canadiens.
+  ?player rdfs:label ?playerLabel.
+  
+  FILTER(lang(?playerLabel) = "en")
+}
+ORDER BY ?playerLabel
